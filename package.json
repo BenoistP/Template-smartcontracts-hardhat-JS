@@ -1,0 +1,38 @@
+{
+  "devDependencies": {
+    "@nomiclabs/hardhat-etherscan": "^3.1.7",
+    "@nomiclabs/hardhat-waffle": "^2.0.5",
+    "@openzeppelin/contracts": "^4.8.2",
+    "@openzeppelin/contracts-upgradeable": "^4.8.2",
+    "@primitivefi/hardhat-dodoc": "^0.2.3",
+    "del-cli": "^5.0.0",
+    "dotenv": "^16.0.3",
+    "hardhat": "^2.13.1",
+    "hardhat-gas-reporter": "^1.0.9",
+    "hardhat-tracer": "^2.2.2",
+    "solc": "^0.8.19",
+    "solc-0.8": "npm:solc@^0.8.19",
+    "solidity-coverage": "^0.8.2",
+    "solidity-docgen": "0.6.0-beta.35"
+  },
+  "scripts": {
+    "clean": "npx hardhat clean",
+    "docgen": "npx solidity-docgen --solc-module solc-0.8 -o .\\docs\\solidity-docs",
+    "comp": "npx hardhat compile",
+    "compile": "npx hardhat compile",
+    "accounts": "npx hardhat accounts",
+    "startLocalNode": "npx hardhat node",
+    "test": "npx hardhat test",
+    "testTrace": "npx hardhat test --trace",
+    "testFulltrace": "npx hardhat test --fulltrace",
+    "depLoc": "npx hardhat run scripts/deployMV.js --network localhost",
+    "depMumb": "npx hardhat run scripts/deployMV.js --network maticmumbai",
+    "verifyMumb": "npx hardhat verify 0xfFBb55e95807E8eFBfe86e2624c226C118BF3f80 --constructor-args scripts/deployedMV-arguments.js --network maticmumbai ",
+    "installNCU": "npm i -g npm-check-updates",
+    "updatePackages": "ncu --upgrade",
+    "updateNpm": "npm update -g",
+    "npm:cleanCache": "npm cache clean -f",
+    "cleanBuildDir": "del-cli ./artifacts",
+    "clnBld": "npm run cleanBuildDir"
+  }
+}
