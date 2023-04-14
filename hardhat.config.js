@@ -96,30 +96,33 @@ console.debug(`PROVIDER_CONFIG = "${PROVIDER_CONFIG}"`)
 console.debug(`process.env.LOCAL__TESTNET_GOERLI__ALCHEMY__RPC_URL = "${process.env.LOCAL__TESTNET_GOERLI__ALCHEMY__RPC_URL}"`)
 console.debug(`process.env.LOCAL__TESTNET_GOERLI__INFURA__RPC_URL = "${process.env.LOCAL__TESTNET_GOERLI__INFURA__RPC_URL}"`)
 
-console.debug(`process.env.LOCAL__TESTNET_MATIC_MUMBAI__ALCHEMY__RPC_URL = "${process.env.LOCAL__TESTNET_MATIC_MUMBAI__ALCHEMY__RPC_URL}"`)
-console.debug(`process.env.LOCAL__TESTNET_MATIC_MUMBAI__INFURA__RPC_URL = "${process.env.LOCAL__TESTNET_MATIC_MUMBAI__INFURA__RPC_URL}"`)
+console.debug(`process.env.LOCAL__TESTNET_POLYGON_MUMBAI__ALCHEMY__RPC_URL = "${process.env.LOCAL__TESTNET_POLYGON_MUMBAI__ALCHEMY__RPC_URL}"`)
+console.debug(`process.env.LOCAL__TESTNET_POLYGON_MUMBAI__INFURA__RPC_URL = "${process.env.LOCAL__TESTNET_POLYGON_MUMBAI__INFURA__RPC_URL}"`)
  */
 const TESTNET_GOERLI_RPC = ( PROVIDER_CONFIG == PROVIDER_CONFIG__LOCAL ?
-  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__TESTNET_GOERLI__ALCHEMY__RPC_URL : process.env.LOCAL__TESTNET_GOERLI__INFURA__RPC_URL ) :
-  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__TESTNET_GOERLI__ALCHEMY__RPC_URL : process.env.PROJECT__TESTNET_GOERLI__INFURA__RPC_URL )
+    (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__TESTNET_GOERLI__ALCHEMY__RPC_URL : process.env.LOCAL__TESTNET_GOERLI__INFURA__RPC_URL ) :
+    (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__TESTNET_GOERLI__ALCHEMY__RPC_URL : process.env.PROJECT__TESTNET_GOERLI__INFURA__RPC_URL )
   )
 
+const TESTNET_SEPOLIA_RPC = ( PROVIDER_CONFIG == PROVIDER_CONFIG__LOCAL ?
+    (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__TESTNET_SEPOLIA__ALCHEMY__RPC_URL : process.env.LOCAL__TESTNET_SEPOLIA__INFURA__RPC_URL ) :
+    (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__TESTNET_SEPOLIA__ALCHEMY__RPC_URL : process.env.PROJECT__TESTNET_SEPOLIA__INFURA__RPC_URL )
+  )
 
-const TESTNET_MATIC_MUMBAI_RPC = ( PROVIDER_CONFIG == PROVIDER_CONFIG__LOCAL ?
-  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__TESTNET_MATIC_MUMBAI__ALCHEMY__RPC_URL : process.env.LOCAL__TESTNET_MATIC_MUMBAI__INFURA__RPC_URL ) :
-  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__TESTNET_MATIC_MUMBAI__ALCHEMY__RPC_URL : process.env.PROJECT__TESTNET_MATIC_MUMBAI__INFURA__RPC_URL )
+const TESTNET_POLYGON_MUMBAI_RPC = ( PROVIDER_CONFIG == PROVIDER_CONFIG__LOCAL ?
+    (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__TESTNET_POLYGON_MUMBAI__ALCHEMY__RPC_URL : process.env.LOCAL__TESTNET_POLYGON_MUMBAI__INFURA__RPC_URL ) :
+    (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__TESTNET_POLYGON_MUMBAI__ALCHEMY__RPC_URL : process.env.PROJECT__TESTNET_POLYGON_MUMBAI__INFURA__RPC_URL )
   )
   
-const MAINNET_MATIC__RPC = ( PROVIDER_CONFIG == PROVIDER_CONFIG__LOCAL ?
-  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__MAINNET_MATIC__ALCHEMY__RPC_URL : process.env.LOCAL__MAINNET_MATIC__INFURA__RPC_URL ) :
-  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__MAINNET_MATIC__ALCHEMY__RPC_URL : process.env.PROJECT__MAINNET_MATIC__INFURA__RPC_URL )
+const MAINNET_POLYGON__RPC = ( PROVIDER_CONFIG == PROVIDER_CONFIG__LOCAL ?
+    (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__MAINNET_POLYGON__ALCHEMY__RPC_URL : process.env.LOCAL__MAINNET_POLYGON__INFURA__RPC_URL ) :
+    (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__MAINNET_POLYGON__ALCHEMY__RPC_URL : process.env.PROJECT__MAINNET_POLYGON__INFURA__RPC_URL )
   )
 
 console.debug(`TESTNET_GOERLI_RPC = "${TESTNET_GOERLI_RPC}"`)
-console.debug(`TESTNET_MATIC_MUMBAI_RPC = "${TESTNET_MATIC_MUMBAI_RPC}"`)
-console.debug(`MAINNET_MATIC__RPC = "${MAINNET_MATIC__RPC}"`)
-
-// console.log(process.env.MATIC_MUMBAI_RPC)
+console.debug(`TESTNET_SEPOLIA_RPC = "${TESTNET_SEPOLIA_RPC}"`)
+console.debug(`TESTNET_POLYGON_MUMBAI_RPC = "${TESTNET_POLYGON_MUMBAI_RPC}"`)
+console.debug(`MAINNET_POLYGON__RPC = "${MAINNET_POLYGON__RPC}"`)
 
 console.log('-------------------------------------')
 
@@ -180,7 +183,8 @@ module.exports = {
 
   defaultNetwork: "hardhat",
   // defaultNetwork: "goerli",
-  // defaultNetwork: "maticmumbai",
+  // defaultNetwork: "sepolia",
+  // defaultNetwork: "mumbai",
 
 
   //https://www.npmjs.com/package/@primitivefi/hardhat-dodoc
@@ -204,7 +208,7 @@ module.exports = {
   networks: {
     hardhat: {
     },
-
+    // Goerli Testnet
     goerli: {
       url: TESTNET_GOERLI_RPC || "",
       accounts:
@@ -223,8 +227,9 @@ module.exports = {
             [],
       // gasPrice: 8000000000, // default is 'auto' which breaks chains without the london hardfork
     },
+    // Sepolia Testnet
     sepolia: {
-      url: process.env.TESTNET_SEPOLIA_RPC || "",
+      url: TESTNET_SEPOLIA_RPC || "",
       accounts:
         process.env.LOCAL_PRIVATE_KEY !== undefined ?
           [process.env.LOCAL_PRIVATE_KEY]
@@ -241,8 +246,9 @@ module.exports = {
             [],
       // gasPrice: 8000000000, // default is 'auto' which breaks chains without the london hardfork
     },
-    maticmumbai: {
-      url: TESTNET_MATIC_MUMBAI_RPC || "",
+    // Polygon Mumbai Testnet
+    mumbai: {
+      url: TESTNET_POLYGON_MUMBAI_RPC || "",
       accounts:
         process.env.LOCAL_PRIVATE_KEY !== undefined ?
           [process.env.LOCAL_PRIVATE_KEY]
@@ -259,8 +265,9 @@ module.exports = {
             [],
       // gasPrice: 8000000000, // default is 'auto' which breaks chains without the london hardfork
     },
-    matic: {
-      url: MAINNET_MATIC__RPC || "",
+    // Polygon Mainnet
+    polygon: {
+      url: MAINNET_POLYGON__RPC || "",
       accounts:
         process.env.PROJECT_PRIVATE_KEY !== undefined ?
           [process.env.PROJECT_PRIVATE_KEY]
