@@ -44,17 +44,35 @@ const CONTRACTS_BUILD_DIR = ( process.env.CONTRACTS_BUILD_DIR !== undefined ? ( 
 // console.debug(" ****process.env.CONTRACTS_BUILD_DIR= ", process.env.CONTRACTS_BUILD_DIR)
 console.log(`CONTRACTS_BUILD_DIR = "${CONTRACTS_BUILD_DIR}"`)
 
-// console.log(process.env.WALLET_MNEMONIC_PROJECT)
+// console.log(process.env.LOCAL_WALLET_MNEMONIC)
 
-
-const WALLET_MNEMONIC_PROJECT = process.env.WALLET_MNEMONIC_PROJECT
-if (WALLET_MNEMONIC_PROJECT) {
-  console.log(`WALLET_MNEMONIC_PROJECT is ${WALLET_MNEMONIC_PROJECT===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+const LOCAL_PRIVATE_KEY = process.env.LOCAL_PRIVATE_KEY
+if (LOCAL_PRIVATE_KEY) {
+  console.log(`LOCAL_PRIVATE_KEY is ${LOCAL_PRIVATE_KEY===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
 } else {
-  console.error(`WALLET_MNEMONIC_PROJECT is ${WALLET_MNEMONIC_PROJECT===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+  console.error(`LOCAL_PRIVATE_KEY is ${LOCAL_PRIVATE_KEY===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
 }
 
+const LOCAL_WALLET_MNEMONIC = process.env.LOCAL_WALLET_MNEMONIC
+if (LOCAL_WALLET_MNEMONIC) {
+  console.log(`LOCAL_WALLET_MNEMONIC is ${LOCAL_WALLET_MNEMONIC===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+} else {
+  console.error(`LOCAL_WALLET_MNEMONIC is ${LOCAL_WALLET_MNEMONIC===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+}
 
+const PROJECT_WALLET_MNEMONIC = process.env.PROJECT_WALLET_MNEMONIC
+if (PROJECT_WALLET_MNEMONIC) {
+  console.log(`PROJECT_WALLET_MNEMONIC is ${PROJECT_WALLET_MNEMONIC===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+} else {
+  console.error(`PROJECT_WALLET_MNEMONIC is ${PROJECT_WALLET_MNEMONIC===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+}
+
+const PROJECT_PRIVATE_KEY = process.env.PROJECT_PRIVATE_KEY
+if (PROJECT_PRIVATE_KEY) {
+  console.log(`PROJECT_PRIVATE_KEY is ${PROJECT_PRIVATE_KEY===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+} else {
+  console.error(`PROJECT_PRIVATE_KEY is ${PROJECT_PRIVATE_KEY===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+}
 // console.log(process.env.MATIC_MUMBAI_RPC)
 
 console.log('-------------------------------------')
@@ -115,6 +133,9 @@ task("comp", "Compile")
 module.exports = {
 
   defaultNetwork: "hardhat",
+  // defaultNetwork: "ropsten",
+  // defaultNetwork: "maticmumbai",
+
 
   //https://www.npmjs.com/package/@primitivefi/hardhat-dodoc
   dodoc: {
@@ -141,18 +162,18 @@ module.exports = {
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
       accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+        process.env.LOCAL_PRIVATE_KEY !== undefined ? [process.env.LOCAL_PRIVATE_KEY] : [],
     },
 
     maticmumbai: {
       url: process.env.MATIC_MUMBAI_RPC || "",
       accounts:
-        process.env.PRIVATE_KEY !== undefined ?
-          [process.env.PRIVATE_KEY]
+        process.env.LOCAL_PRIVATE_KEY !== undefined ?
+          [process.env.LOCAL_PRIVATE_KEY]
           :
-          process.env.WALLET_MNEMONIC_PROJECT !== undefined ?
+          process.env.LOCAL_WALLET_MNEMONIC !== undefined ?
             {
-              mnemonic: process.env.WALLET_MNEMONIC_PROJECT,
+              mnemonic: process.env.LOCAL_WALLET_MNEMONIC,
               path: "m/44'/60'/0'/0",
               initialIndex: 0,
               count: 20,
