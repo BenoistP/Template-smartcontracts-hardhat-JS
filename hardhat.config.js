@@ -29,20 +29,31 @@ const DEFAULT_CONTRACTS_BUILD_DIR = "./artifacts"
 console.log('-------------------------------------')
 
 const SOLIDITY_VERSION = ( process.env.SOLIDITY_VERSION !== undefined ? process.env.SOLIDITY_VERSION : DEFAULT_SOLIDITY_VERSION )
-console.debug(" ****process.env.SOLIDITY_VERSION= ", process.env.SOLIDITY_VERSION)
+// console.debug(" ****process.env.SOLIDITY_VERSION= ", process.env.SOLIDITY_VERSION)
 console.log(`SOLIDITY_VERSION = "${SOLIDITY_VERSION}"`)
 
 const GENERATE_DOCS = ( process.env.GENERATE_DOCS !== undefined ? process.env.GENERATE_DOCS === "true" : DEFAULT_GENERATE_DOCS )
-console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
+// console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
 console.log(`GENERATE_DOCS = "${GENERATE_DOCS}"`)
 
 
 const CONTRACTS_BUILD_DIR = ( process.env.CONTRACTS_BUILD_DIR !== undefined ? ( process.env.CONTRACTS_BUILD_DIR.trim() !== "" ? Path.join(__dirname, process.env.CONTRACTS_BUILD_DIR ) : DEFAULT_CONTRACTS_BUILD_DIR ) : DEFAULT_CONTRACTS_BUILD_DIR )
-console.debug(" ****process.env.CONTRACTS_BUILD_DIR= ", process.env.CONTRACTS_BUILD_DIR)
+// console.debug(" ****process.env.CONTRACTS_BUILD_DIR= ", process.env.CONTRACTS_BUILD_DIR)
 console.log(`CONTRACTS_BUILD_DIR = "${CONTRACTS_BUILD_DIR}"`)
 
-console.log(process.env.WALLET_MNEMONIC_PROJECT)
-console.log(process.env.MATIC_MUMBAI_RPC)
+// console.log(process.env.WALLET_MNEMONIC_PROJECT)
+
+
+const WALLET_MNEMONIC_PROJECT = process.env.WALLET_MNEMONIC_PROJECT
+if (WALLET_MNEMONIC_PROJECT) {
+  console.log(`WALLET_MNEMONIC_PROJECT is ${WALLET_MNEMONIC_PROJECT===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+} else {
+  console.error(`WALLET_MNEMONIC_PROJECT is ${WALLET_MNEMONIC_PROJECT===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
+}
+
+
+// console.log(process.env.MATIC_MUMBAI_RPC)
+
 console.log('-------------------------------------')
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -97,7 +108,7 @@ module.exports = {
 
   //https://www.npmjs.com/package/@primitivefi/hardhat-dodoc
   dodoc: {
-    runOnCompile: Generate_docs||false,
+    runOnCompile: GENERATE_DOCS||false,
     debugMode: false,
     // More options...
   },
@@ -149,7 +160,7 @@ module.exports = {
     tests: "./test",
     cache: "./cache",
     // artifacts: "./artifacts"
-    artifacts: Contracts_Build_Dir,
+    artifacts: CONTRACTS_BUILD_DIR,
   },
 
   gasReporter: {
