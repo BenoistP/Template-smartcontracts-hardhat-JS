@@ -37,6 +37,10 @@ yarn-error.log*
 
 .secret
 .env
+.env*
+# local parmeters
+params-local.env
+
 
 # editors
 
