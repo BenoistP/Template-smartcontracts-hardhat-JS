@@ -21,24 +21,25 @@ require("hardhat-tracer")
 require('@primitivefi/hardhat-dodoc')
 
 // # Defaults
-const SOLIDITY_VERSION = "0.8.0"
-const GENERATEDOCS = false
-const CONTRACTS_BUILD_DIR = "./artifacts"
+const DEFAULT_SOLIDITY_VERSION = "0.8.9"
+const DEFAULT_GENERATE_DOCS = false
+const DEFAULT_CONTRACTS_BUILD_DIR = "./artifacts"
+
 
 console.log('-------------------------------------')
 
-const Solidity_version = ( process.env.Solidity_version !== undefined ? process.env.Solidity_version : SOLIDITY_VERSION )
-console.log(" ****process.env.Solidity_version= ", process.env.Solidity_version)
-console.log(`Solidity_version = "${Solidity_version}"`)
+const SOLIDITY_VERSION = ( process.env.SOLIDITY_VERSION !== undefined ? process.env.SOLIDITY_VERSION : DEFAULT_SOLIDITY_VERSION )
+console.debug(" ****process.env.SOLIDITY_VERSION= ", process.env.SOLIDITY_VERSION)
+console.log(`SOLIDITY_VERSION = "${SOLIDITY_VERSION}"`)
 
-const Generate_docs = ( process.env.Generate_Docs !== undefined ? process.env.Generate_Docs === "true" : GENERATEDOCS )
-console.log(" ****process.env.Generate_Docs= ", process.env.Generate_Docs)
-console.log(`Generate_docs = "${Generate_docs}"`)
+const GENERATE_DOCS = ( process.env.GENERATE_DOCS !== undefined ? process.env.GENERATE_DOCS === "true" : DEFAULT_GENERATE_DOCS )
+console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
+console.log(`GENERATE_DOCS = "${GENERATE_DOCS}"`)
 
 
-const Contracts_Build_Dir = ( process.env.Contracts_Build_Dir !== undefined ? ( process.env.Contracts_Build_Dir.trim() !== "" ? Path.join(__dirname, process.env.Contracts_Build_Dir ) : CONTRACTS_BUILD_DIR ) : CONTRACTS_BUILD_DIR )
-console.log(" ****process.env.Contracts_Build_Dir= ", process.env.Contracts_Build_Dir)
-console.log(`Contracts_Build_Dir = "${Contracts_Build_Dir}"`)
+const CONTRACTS_BUILD_DIR = ( process.env.CONTRACTS_BUILD_DIR !== undefined ? ( process.env.CONTRACTS_BUILD_DIR.trim() !== "" ? Path.join(__dirname, process.env.CONTRACTS_BUILD_DIR ) : DEFAULT_CONTRACTS_BUILD_DIR ) : DEFAULT_CONTRACTS_BUILD_DIR )
+console.debug(" ****process.env.CONTRACTS_BUILD_DIR= ", process.env.CONTRACTS_BUILD_DIR)
+console.log(`CONTRACTS_BUILD_DIR = "${CONTRACTS_BUILD_DIR}"`)
 
 console.log(process.env.WALLET_MNEMONIC_PROJECT)
 console.log(process.env.MATIC_MUMBAI_RPC)
@@ -47,10 +48,12 @@ console.log('-------------------------------------')
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+  console.log("taskArgs=", taskArgs)
   const accounts = await hre.ethers.getSigners()
 
   for (const account of accounts) {
-    console.log(account.address)
+    console.dir(account)
+    console.log(` account.address=${account.address}`)
   }
 })
 
@@ -101,7 +104,7 @@ module.exports = {
 
 
   solidity: {
-    version: Solidity_version,
+    version: SOLIDITY_VERSION,
     settings: {
       optimizer: {
         enabled: true,
