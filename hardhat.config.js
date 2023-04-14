@@ -61,15 +61,22 @@ console.log('-------------------------------------')
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+task("accounts", "Prints the list of accounts", async (taskArgs, hre) =>
+{
   console.log("taskArgs=", taskArgs)
   const accounts = await hre.ethers.getSigners()
-
+/* 
   for (const account of accounts) {
-    console.dir(account)
+    // console.dir(account)
     console.log(` account.address=${account.address}`)
-  }
-})
+  } // for
+
+ */
+  accounts.forEach(function (account, i) {
+    console.log('account.address=%d: %s', i, account.address);
+});
+
+}) // task
 
 // task("docx", "compile", async (taskArgs, hre) => {
 //   await hre.run("compile");
