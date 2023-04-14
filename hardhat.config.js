@@ -3,8 +3,11 @@
 require("dotenv").config()
 
 // PUBLIC
-// localparams.env
-require('dotenv').config({path: './localparams.env'})
+// params-defaults.env
+require('dotenv').config({path: './params-defaults.env'})
+// params-local.env
+require('dotenv').config({path: './params-local.env'})
+
 
 const Path = require("path");
 let generateDoc = false;
@@ -21,7 +24,7 @@ require("hardhat-tracer")
 require('@primitivefi/hardhat-dodoc')
 
 // # Defaults
-const DEFAULT_SOLIDITY_VERSION = "0.8.9"
+const DEFAULT_SOLIDITY_VERSION = "0.8.0"
 const DEFAULT_GENERATE_DOCS = false
 const DEFAULT_CONTRACTS_BUILD_DIR = "./artifacts"
 
