@@ -8,6 +8,12 @@ require('dotenv').config({path: './params-defaults.env'})
 // params-local.env
 require('dotenv').config({path: './params-local.env'})
 
+// PRIVATE
+// .env-defaults
+require('dotenv').config({path: './.env-defaults'})
+// .env-project
+require('dotenv').config({path: './.env-project'})
+
 
 const Path = require("path");
 let generateDoc = false;
@@ -44,7 +50,6 @@ const CONTRACTS_BUILD_DIR = ( process.env.CONTRACTS_BUILD_DIR !== undefined ? ( 
 // console.debug(" ****process.env.CONTRACTS_BUILD_DIR= ", process.env.CONTRACTS_BUILD_DIR)
 console.log(`CONTRACTS_BUILD_DIR = "${CONTRACTS_BUILD_DIR}"`)
 
-// console.log(process.env.LOCAL_WALLET_MNEMONIC)
 
 const LOCAL_PRIVATE_KEY = process.env.LOCAL_PRIVATE_KEY
 if (LOCAL_PRIVATE_KEY) {
@@ -73,6 +78,53 @@ if (PROJECT_PRIVATE_KEY) {
 } else {
   console.error(`PROJECT_PRIVATE_KEY is ${PROJECT_PRIVATE_KEY===undefined?"UNDEFINED ❌":" DEFINED ✔️" }`)
 }
+
+const PROVIDER_NAME__ALCHEMY = "ALCHEMY"
+const PROVIDER_NAME__INFURA = "INFURA"
+const DEFAULT_PROVIDER_NAME = PROVIDER_NAME__INFURA
+
+const PROVIDER_CONFIG__LOCAL = "LOCAL"
+const PROVIDER_CONFIG__PROJECT = "PROJECT"
+
+const PROVIDER_NAME = ( process.env.PROVIDER_NAME !== undefined ? process.env.PROVIDER_NAME : DEFAULT_PROVIDER_NAME )
+const PROVIDER_CONFIG = ( process.env.PROVIDER_CONFIG !== undefined ? process.env.PROVIDER_CONFIG : PROVIDER_CONFIG__LOCAL )
+
+console.log(`PROVIDER_NAME = "${PROVIDER_NAME}"`)
+console.log(`PROVIDER_CONFIG = "${PROVIDER_CONFIG}"`)
+
+const TESTNET_GOERLI_RPC = ( PROVIDER_CONFIG === PROVIDER_CONFIG__LOCAL ?
+  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__TESTNET_GOERLI__ALCHEMY__RPC_URL : process.env.LOCAL__TESTNET_GOERLI__INFURA__RPC_URL ) :
+  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__TESTNET_GOERLI__ALCHEMY__RPC_URL : process.env.PROJECT__TESTNET_GOERLI__INFURA__RPC_URL )
+  )
+console.log(`TESTNET_GOERLI_RPC = "${TESTNET_GOERLI_RPC}"`)
+
+const TESTNET_MATIC_MUMBAI_RPC = ( PROVIDER_CONFIG === PROVIDER_CONFIG__LOCAL ?
+  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__TESTNET_MATIC_MUMBAI__ALCHEMY__RPC_URL : process.env.LOCAL__TESTNET_MATIC_MUMBAI__INFURA__RPC_URL ) :
+  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__TESTNET_MATIC_MUMBAI__ALCHEMY__RPC_URL : process.env.PROJECT__TESTNET_MATIC_MUMBAI__INFURA__RPC_URL )
+  )
+console.log(`TESTNET_MATIC_MUMBAI_RPC = "${TESTNET_MATIC_MUMBAI_RPC}"`)
+
+const MAINNET_MATIC__RPC = ( PROVIDER_CONFIG === PROVIDER_CONFIG__LOCAL ?
+  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.LOCAL__MAINNET_MATIC__ALCHEMY__RPC_URL : process.env.LOCAL__MAINNET_MATIC__INFURA__RPC_URL ) :
+  (PROVIDER_NAME == PROVIDER_NAME__ALCHEMY ? process.env.PROJECT__MAINNET_MATIC__ALCHEMY__RPC_URL : process.env.PROJECT__MAINNET_MATIC__INFURA__RPC_URL )
+  )
+console.log(`MAINNET_MATIC__RPC = "${MAINNET_MATIC__RPC}"`)  
+/* 
+LOCAL__TESTNET_GOERLI__ALCHEMY__RPC_URL
+LOCAL__TESTNET_MATIC_MUMBAI__ALCHEMY__RPC_URL
+
+LOCAL__TESTNET_GOERLI__INFURA__RPC_URL
+LOCAL__TESTNET_MATIC_MUMBAI__INFURA__RPC_URL
+
+
+PROJECT__TESTNET_GOERLI__ALCHEMY__RPC_URL
+PROJECT__TESTNET_MATIC_MUMBAI__ALCHEMY__RPC_URL
+
+PROJECT__TESTNET_GOERLI__INFURA__RPC_URL
+PROJECT__TESTNET_MATIC_MUMBAI__INFURA__RPC_URL
+
+ */
+
 // console.log(process.env.MATIC_MUMBAI_RPC)
 
 console.log('-------------------------------------')
@@ -133,7 +185,7 @@ task("comp", "Compile")
 module.exports = {
 
   defaultNetwork: "hardhat",
-  // defaultNetwork: "ropsten",
+  // defaultNetwork: "goerli",
   // defaultNetwork: "maticmumbai",
 
 
@@ -159,14 +211,8 @@ module.exports = {
     hardhat: {
     },
 
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
-      accounts:
-        process.env.LOCAL_PRIVATE_KEY !== undefined ? [process.env.LOCAL_PRIVATE_KEY] : [],
-    },
-
-    maticmumbai: {
-      url: process.env.MATIC_MUMBAI_RPC || "",
+    goerli: {
+      url: TESTNET_GOERLI_RPC || "",
       accounts:
         process.env.LOCAL_PRIVATE_KEY !== undefined ?
           [process.env.LOCAL_PRIVATE_KEY]
@@ -174,6 +220,60 @@ module.exports = {
           process.env.LOCAL_WALLET_MNEMONIC !== undefined ?
             {
               mnemonic: process.env.LOCAL_WALLET_MNEMONIC,
+              path: "m/44'/60'/0'/0",
+              initialIndex: 0,
+              count: 20,
+              passphrase: "",
+            }
+            :
+            [],
+      // gasPrice: 8000000000, // default is 'auto' which breaks chains without the london hardfork
+    },
+    sepolia: {
+      url: process.env.TESTNET_SEPOLIA_RPC || "",
+      accounts:
+        process.env.LOCAL_PRIVATE_KEY !== undefined ?
+          [process.env.LOCAL_PRIVATE_KEY]
+          :
+          process.env.LOCAL_WALLET_MNEMONIC !== undefined ?
+            {
+              mnemonic: process.env.LOCAL_WALLET_MNEMONIC,
+              path: "m/44'/60'/0'/0",
+              initialIndex: 0,
+              count: 20,
+              passphrase: "",
+            }
+            :
+            [],
+      // gasPrice: 8000000000, // default is 'auto' which breaks chains without the london hardfork
+    },
+    maticmumbai: {
+      url: TESTNET_MATIC_MUMBAI_RPC || "",
+      accounts:
+        process.env.LOCAL_PRIVATE_KEY !== undefined ?
+          [process.env.LOCAL_PRIVATE_KEY]
+          :
+          process.env.LOCAL_WALLET_MNEMONIC !== undefined ?
+            {
+              mnemonic: process.env.LOCAL_WALLET_MNEMONIC,
+              path: "m/44'/60'/0'/0",
+              initialIndex: 0,
+              count: 20,
+              passphrase: "",
+            }
+            :
+            [],
+      // gasPrice: 8000000000, // default is 'auto' which breaks chains without the london hardfork
+    },
+    matic: {
+      url: MAINNET_MATIC__RPC || "",
+      accounts:
+        process.env.PROJECT_PRIVATE_KEY !== undefined ?
+          [process.env.PROJECT_PRIVATE_KEY]
+          :
+          process.env.PROJECT_WALLET_MNEMONIC !== undefined ?
+            {
+              mnemonic: process.env.PROJECT_WALLET_MNEMONIC,
               path: "m/44'/60'/0'/0",
               initialIndex: 0,
               count: 20,
@@ -201,11 +301,9 @@ module.exports = {
 
   etherscan: {
     apiKey: {
-        mainnet: process.env.ETHERSCAN_API_KEY,
-        ropsten: process.env.ETHERSCAN_API_KEY,
-        rinkeby: process.env.ETHERSCAN_API_KEY,
-        goerli: process.env.ETHERSCAN_API_KEY,
-        kovan: process.env.ETHERSCAN_API_KEY,
+        mainnet: process.env.MAINNET_ETHERSCAN_API_KEY,
+        goerli: process.env.GOERLI_ETHERSCAN_API_KEY,
+        sepolia: process.env.SEPOLIA_ETHERSCAN_API_KEY,
         // binance smart chain
         bsc: "YOUR_BSCSCAN_API_KEY",
         bscTestnet: "YOUR_BSCSCAN_API_KEY",
