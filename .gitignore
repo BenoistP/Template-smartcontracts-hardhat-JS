@@ -54,8 +54,13 @@ client/*.zip
 client/*.7z
 *.zip
 *.7z
-
+*.tmp
+.tmp/*
 .trash
 
 # Smartcontracts artifacts
 client/src/contracts
+
+# Don't ignore these files...
+#!.gitignore
+!*.md
