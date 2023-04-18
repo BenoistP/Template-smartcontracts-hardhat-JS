@@ -5,6 +5,7 @@
     "@openzeppelin/contracts": "^4.8.2",
     "@openzeppelin/contracts-upgradeable": "^4.8.2",
     "@primitivefi/hardhat-dodoc": "^0.2.3",
+    "concurrently": "^8.0.1",
     "del-cli": "^5.0.0",
     "dotenv": "^16.0.3",
     "hardhat": "^2.13.1",
@@ -19,8 +20,10 @@
     "clean": "npx hardhat clean",
     "dodoc": "npx hardhat dodoc",
     "docgen": "npx hardhat docgen",
-    "comp": "npx hardhat compile",
+    "docall": "concurrently \"npm run dodoc\" \"npm run docgen\"",
     "compile": "npx hardhat compile",
+    "comp": "npm run compile",
+    "c": "npm run compile",
     "accounts": "npx hardhat accounts",
     "startLocalNode": "npx hardhat node",
     "test": "npx hardhat test",
@@ -34,7 +37,7 @@
     "updateNpm": "npm update -g",
     "npm:cleanCache": "npm cache clean -f",
     "cleanBuildDir": "del-cli ./artifacts",
-    "cleanDocsDir": "del-cli ./docs/solidity-docs/natspec/",
+    "cleanDocsDir": "del-cli ./docs/generated/solidity-docs/natspec/",
     "clnBld": "npm run cleanBuildDir"
   }
 }
