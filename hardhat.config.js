@@ -41,26 +41,28 @@ const DEFAULT_CONTRACTS_BUILD_DIR = "./artifacts"
 
 console.log('-------------------------------------')
 
+// Solidity
 const SOLIDITY_VERSION = ( process.env.SOLIDITY_VERSION !== undefined ? process.env.SOLIDITY_VERSION : DEFAULT_SOLIDITY_VERSION )
 // console.debug(" ****process.env.SOLIDITY_VERSION= ", process.env.SOLIDITY_VERSION)
 console.log(`SOLIDITY_VERSION = "${SOLIDITY_VERSION}"`)
 
-const GENERATE_DOCS = ( process.env.GENERATE_DOCS !== undefined ? process.env.GENERATE_DOCS === "true" : DEFAULT_DOCS_OUTPUT_PATH )
-// console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
-console.log(`GENERATE_DOCS = "${GENERATE_DOCS}"`)
-
-const DOCS_HH_OUTPUT_PATH = ( process.env.DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH !== undefined ? process.env.DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH : DEFAULT_DOCS_HH_OUTPUT_PATH )
-// console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
-console.log(`DOCS_HH_OUTPUT_PATH = "${DOCS_HH_OUTPUT_PATH}"`)
-
-// DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH=./docs/solidity-docs/natspec/hh
-// DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH=./docs/solidity-docs/natspec/oz
-
-
+// Contracts Build Dir
 const CONTRACTS_BUILD_DIR = ( process.env.CONTRACTS_BUILD_DIR !== undefined ? ( process.env.CONTRACTS_BUILD_DIR.trim() !== "" ? Path.join(__dirname, process.env.CONTRACTS_BUILD_DIR ) : DEFAULT_CONTRACTS_BUILD_DIR ) : DEFAULT_CONTRACTS_BUILD_DIR )
 // console.debug(" ****process.env.CONTRACTS_BUILD_DIR= ", process.env.CONTRACTS_BUILD_DIR)
 console.log(`CONTRACTS_BUILD_DIR = "${CONTRACTS_BUILD_DIR}"`)
 
+// Docs
+const GENERATE_DOCS = ( process.env.GENERATE_DOCS !== undefined ? process.env.GENERATE_DOCS === "true" : DEFAULT_DOCS_OUTPUT_PATH )
+// console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
+console.log(`GENERATE_DOCS = "${GENERATE_DOCS}"`)
+
+const DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH = ( process.env.DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH !== undefined ? process.env.DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH : DEFAULT_DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH )
+// console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
+console.log(`DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH = "${DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH}"`)
+
+const DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH = ( process.env.DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH !== undefined ? process.env.DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH : DEFAULT_DOCS_OZ_OUTPUT_PATH )
+// console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
+console.log(`DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH = "${DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH}"`)
 
 const LOCAL_PRIVATE_KEY = process.env.LOCAL_PRIVATE_KEY
 if (LOCAL_PRIVATE_KEY) {
@@ -196,19 +198,28 @@ module.exports = {
   // defaultNetwork: "goerli",
   // defaultNetwork: "sepolia",
   // defaultNetwork: "mumbai",
-
-
-  //https://www.npmjs.com/package/@primitivefi/hardhat-dodoc
+  
   dodoc: {
     runOnCompile: GENERATE_DOCS||false,
     debugMode: false,
     freshOutput: true, // clean before generate
-    outputDir: DOCS_HH_OUTPUT_PATH,
+    outputDir: DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH,
     // More options...
+    // https://www.npmjs.com/package/@primitivefi/hardhat-dodoc
     // include
     // exclude
     // keepFileStructure
   },
+  docgen: { 
+    outputDir: DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH,
+    // More options...
+    // templates
+    // pages (default: 'single')
+    // theme
+    // exclude
+    // pageExtension (default: 'md')
+    // https://github.com/OpenZeppelin/solidity-docgen/blob/master/src/config.ts
+  }, 
 
 
   solidity: {

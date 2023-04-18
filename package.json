@@ -18,7 +18,7 @@
   "scripts": {
     "clean": "npx hardhat clean",
     "dodoc": "npx hardhat dodoc",
-    "docgen": "npx solidity-docgen --solc-module solc-0.8 -o .\\docs\\solidity-docs\\natspec\\docgen",
+    "docgen": "npx hardhat docgen",
     "comp": "npx hardhat compile",
     "compile": "npx hardhat compile",
     "accounts": "npx hardhat accounts",
