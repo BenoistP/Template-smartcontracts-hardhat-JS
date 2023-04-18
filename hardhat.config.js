@@ -16,7 +16,7 @@ require('dotenv').config({path: './.env-project'})
 
 
 const Path = require("path");
-let generateDoc = false;
+const createDirAndSubdirsIfNotExists = require("./js/tools").createDirAndSubdirsIfNotExists
 
 require("@nomiclabs/hardhat-etherscan")
 require("@nomiclabs/hardhat-waffle")
@@ -63,6 +63,19 @@ console.log(`DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH = "${DOCS_PRIMITIVEFI_HH__DOC
 const DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH = ( process.env.DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH !== undefined ? process.env.DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH : DEFAULT_DOCS_HH_OUTPUT_PATH )
 // console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
 console.log(`DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH = "${DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH}"`)
+
+
+if (GENERATE_DOCS) {
+  if (DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH) {
+    // console.log(`DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH = "${DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH}"`)
+    createDirAndSubdirsIfNotExists(DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH)
+  }
+  if (DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH) {
+    // console.log(`DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH = "${DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH}"`)
+    createDirAndSubdirsIfNotExists(DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH)
+  } 
+}
+
 
 const LOCAL_PRIVATE_KEY = process.env.LOCAL_PRIVATE_KEY
 if (LOCAL_PRIVATE_KEY) {
