@@ -35,7 +35,7 @@ const DEFAULT_SOLIDITY_VERSION = "0.8.0"
 const DEFAULT_GENERATE_DOCS = false
 const DEFAULT_DOCS_OUTPUT_PATH = "./docs"
 const DEFAULT_DOCS_HH_OUTPUT_PATH = DEFAULT_DOCS_OUTPUT_PATH + "/hh"
-const DEFAULT_DOCS_OZ_OUTPUT_PATH = DEFAULT_DOCS_OUTPUT_PATH + "/oz"
+const DEFAULT_DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH = DEFAULT_DOCS_OUTPUT_PATH + "/oz"
 const DEFAULT_CONTRACTS_BUILD_DIR = "./artifacts"
 
 
@@ -52,7 +52,7 @@ const CONTRACTS_BUILD_DIR = ( process.env.CONTRACTS_BUILD_DIR !== undefined ? ( 
 console.log(`CONTRACTS_BUILD_DIR = "${CONTRACTS_BUILD_DIR}"`)
 
 // Docs
-const GENERATE_DOCS = ( process.env.GENERATE_DOCS !== undefined ? process.env.GENERATE_DOCS === "true" : DEFAULT_DOCS_OUTPUT_PATH )
+const GENERATE_DOCS = ( process.env.GENERATE_DOCS !== undefined ? process.env.GENERATE_DOCS === "true" : DEFAULT_GENERATE_DOCS )
 // console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
 console.log(`GENERATE_DOCS = "${GENERATE_DOCS}"`)
 
@@ -60,7 +60,7 @@ const DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH = ( process.env.DOCS_PRIMITIVEFI_HH_
 // console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
 console.log(`DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH = "${DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH}"`)
 
-const DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH = ( process.env.DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH !== undefined ? process.env.DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH : DEFAULT_DOCS_OZ_OUTPUT_PATH )
+const DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH = ( process.env.DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH !== undefined ? process.env.DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH : DEFAULT_DOCS_HH_OUTPUT_PATH )
 // console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
 console.log(`DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH = "${DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH}"`)
 
