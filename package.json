@@ -17,7 +17,8 @@
   },
   "scripts": {
     "clean": "npx hardhat clean",
-    "docgen": "npx solidity-docgen --solc-module solc-0.8 -o .\\docs\\solidity-docs",
+    "dodoc": "npx hardhat dodoc",
+    "docgen": "npx solidity-docgen --solc-module solc-0.8 -o .\\docs\\solidity-docs\\natspec\\docgen",
     "comp": "npx hardhat compile",
     "compile": "npx hardhat compile",
     "accounts": "npx hardhat accounts",
@@ -33,6 +34,7 @@
     "updateNpm": "npm update -g",
     "npm:cleanCache": "npm cache clean -f",
     "cleanBuildDir": "del-cli ./artifacts",
+    "cleanDocsDir": "del-cli ./docs/solidity-docs/natspec/",
     "clnBld": "npm run cleanBuildDir"
   }
 }

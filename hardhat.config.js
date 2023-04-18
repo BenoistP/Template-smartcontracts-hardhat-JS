@@ -21,7 +21,8 @@ let generateDoc = false;
 require("@nomiclabs/hardhat-etherscan")
 require("@nomiclabs/hardhat-waffle")
 require("hardhat-gas-reporter")
-require("solidity-coverage")
+require("solidity-docgen")
+// require("solidity-coverage")
 
 // https://www.npmjs.com/package/hardhat-tracer
 require("hardhat-tracer")
@@ -32,6 +33,9 @@ require('@primitivefi/hardhat-dodoc')
 // # Defaults
 const DEFAULT_SOLIDITY_VERSION = "0.8.0"
 const DEFAULT_GENERATE_DOCS = false
+const DEFAULT_DOCS_OUTPUT_PATH = "./docs"
+const DEFAULT_DOCS_HH_OUTPUT_PATH = DEFAULT_DOCS_OUTPUT_PATH + "/hh"
+const DEFAULT_DOCS_OZ_OUTPUT_PATH = DEFAULT_DOCS_OUTPUT_PATH + "/oz"
 const DEFAULT_CONTRACTS_BUILD_DIR = "./artifacts"
 
 
@@ -41,9 +45,16 @@ const SOLIDITY_VERSION = ( process.env.SOLIDITY_VERSION !== undefined ? process.
 // console.debug(" ****process.env.SOLIDITY_VERSION= ", process.env.SOLIDITY_VERSION)
 console.log(`SOLIDITY_VERSION = "${SOLIDITY_VERSION}"`)
 
-const GENERATE_DOCS = ( process.env.GENERATE_DOCS !== undefined ? process.env.GENERATE_DOCS === "true" : DEFAULT_GENERATE_DOCS )
+const GENERATE_DOCS = ( process.env.GENERATE_DOCS !== undefined ? process.env.GENERATE_DOCS === "true" : DEFAULT_DOCS_OUTPUT_PATH )
 // console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
 console.log(`GENERATE_DOCS = "${GENERATE_DOCS}"`)
+
+const DOCS_HH_OUTPUT_PATH = ( process.env.DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH !== undefined ? process.env.DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH : DEFAULT_DOCS_HH_OUTPUT_PATH )
+// console.debug(" ****process.env.GENERATE_DOCS= ", process.env.Generate_Docs)
+console.log(`DOCS_HH_OUTPUT_PATH = "${DOCS_HH_OUTPUT_PATH}"`)
+
+// DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH=./docs/solidity-docs/natspec/hh
+// DOCS_OPENZEPPLIN_GENDOCS_OUTPUT_PATH=./docs/solidity-docs/natspec/oz
 
 
 const CONTRACTS_BUILD_DIR = ( process.env.CONTRACTS_BUILD_DIR !== undefined ? ( process.env.CONTRACTS_BUILD_DIR.trim() !== "" ? Path.join(__dirname, process.env.CONTRACTS_BUILD_DIR ) : DEFAULT_CONTRACTS_BUILD_DIR ) : DEFAULT_CONTRACTS_BUILD_DIR )
@@ -191,7 +202,12 @@ module.exports = {
   dodoc: {
     runOnCompile: GENERATE_DOCS||false,
     debugMode: false,
+    freshOutput: true, // clean before generate
+    outputDir: DOCS_HH_OUTPUT_PATH,
     // More options...
+    // include
+    // exclude
+    // keepFileStructure
   },
 
 
