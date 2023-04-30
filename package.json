@@ -31,6 +31,7 @@
     "cons": "npx hardhat console",
     "accounts": "npx hardhat accounts",
     "startLocalNode": "npx hardhat node",
+    "node": "npx hardhat node",
     "test": "npx hardhat test",
     "testTrace": "npx hardhat test --trace",
     "testFulltrace": "npx hardhat test --fulltrace",
