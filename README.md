@@ -40,3 +40,8 @@ Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_
 ```shell
 npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 ```
+
+
+# Docs
+[Getting started with Hardhat | Ethereum development](https://hardhat.org/hardhat-runner/docs/getting-started#overview/)
+
