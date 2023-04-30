@@ -50,3 +50,6 @@ npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 
 ## Guides
 [Command-line completion](https://hardhat.org/hardhat-runner/docs/guides/command-line-completion/)
+
+
+https://hackmd.io/@fvictorio/hardhat-networks-and-providers
