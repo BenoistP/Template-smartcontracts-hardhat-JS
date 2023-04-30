@@ -19,7 +19,8 @@ const Path = require("path");
 const createDirAndSubdirsIfNotExists = require("./js/tools").createDirAndSubdirsIfNotExists
 
 require("@nomiclabs/hardhat-etherscan")
-require("@nomiclabs/hardhat-waffle")
+//require("@nomiclabs/hardhat-waffle")
+require("@nomicfoundation/hardhat-toolbox");
 require("hardhat-gas-reporter")
 require("solidity-docgen")
 // require("solidity-coverage")

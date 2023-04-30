@@ -2,7 +2,6 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^3.1.7",
-    "@nomiclabs/hardhat-waffle": "^2.0.5",
     "@openzeppelin/contracts": "^4.8.2",
     "@openzeppelin/contracts-upgradeable": "^4.8.2",
     "@primitivefi/hardhat-dodoc": "^0.2.3",
@@ -25,6 +24,7 @@
     "compile": "npx hardhat compile",
     "comp": "npm run compile",
     "c": "npm run compile",
+    "console-no-compile": "npx hardhat console --no-compile",
     "console": "npx hardhat console",
     "cons": "npx hardhat console",
     "accounts": "npx hardhat accounts",

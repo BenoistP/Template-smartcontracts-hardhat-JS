@@ -43,5 +43,10 @@ npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 
 
 # Docs
-[Getting started with Hardhat | Ethereum development](https://hardhat.org/hardhat-runner/docs/getting-started#overview/)
 
+## Hardhat Runner
+[Getting started with Hardhat | Ethereum development - Overview](https://hardhat.org/hardhat-runner/docs/getting-started#overview/)
+
+
+## Guides
+[Command-line completion](https://hardhat.org/hardhat-runner/docs/guides/command-line-completion/)
