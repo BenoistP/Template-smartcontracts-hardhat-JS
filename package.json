@@ -25,6 +25,8 @@
     "compile": "npx hardhat compile",
     "comp": "npm run compile",
     "c": "npm run compile",
+    "console": "npx hardhat console",
+    "cons": "npx hardhat console",
     "accounts": "npx hardhat accounts",
     "startLocalNode": "npx hardhat node",
     "test": "npx hardhat test",
