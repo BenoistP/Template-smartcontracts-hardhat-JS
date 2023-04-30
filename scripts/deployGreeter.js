@@ -5,8 +5,20 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-// const hre = require("hardhat");
-import { ethers } from "hardhat";
+const hre = require("hardhat");
+
+const args = require("./arguments/deployGreeter-arguments.js")
+
+const DEFAULT_ARG_MESSAGE = "Hello, Hardhat! (default)"
+const listArgs = function (obj)
+{
+  console.log( `---------` );
+  console.log( `args:` );
+  for (var key in obj)
+    { console.log( `args[ '${key}' ]= '${obj[key]}'` ); }
+    console.log( `---------` );
+} // listArgs
+
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -16,10 +28,26 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
+  // console.log( `deployGreeter.js: args: ${args}` );
+  listArgs( args );
+
   // We get the contract to deploy
-  // const Greeter_CF = await hre.ethers.getContractFactory("Greeter");
-  const Greeter_CF = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter_CF.deploy(/* args* */);
+  const Greeter_CF = await hre.ethers.getContractFactory("Greeter");
+
+  
+  console.log( `deployGreeter.js: args["message"] = ${args["message"]}` );
+
+  const message = args["message"] ? args["message"] : DEFAULT_ARG_MESSAGE
+  console.log( `deployGreeter.js: args: message = ${message}` );
+
+  // const greeter = await Greeter_CF.deploy( /*args*/ "Hello, Hardhat!" );
+  const greeter = await Greeter_CF.deploy(
+    {
+    // from: deployer,
+    args: [ message ],
+    log: true, // list all the arguments
+}
+ );
 
   await greeter.deployed();
 
