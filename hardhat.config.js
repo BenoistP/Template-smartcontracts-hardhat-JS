@@ -158,21 +158,25 @@ console.log('-------------------------------------')
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) =>
 {
-  console.log("taskArgs=", taskArgs)
-  const HHaccounts= config.networks.hardhat.accounts
-  // console.log("HHaccounts=", HHaccounts)
+  // console.log("taskArgs=", taskArgs)
+  
+  const networkName= hre.network.name
+  console.dir(`networkName=${networkName}`)
+  const networkAccounts= config.networks[networkName].accounts
+  
   const accounts = await hre.ethers.getSigners()
-/* 
-  for (const account of accounts) {
-    // console.dir(account)
-    console.log(` account.address=${account.address}`)
-  } // for
-
- */
+  console.log('accounts.length=', accounts.length)
   accounts.forEach(function (account, i) {
-    const wallet = ethers.Wallet.fromMnemonic(HHaccounts.mnemonic, HHaccounts.path + `/${i}`);
-    const privateKey = wallet.privateKey
-        console.log('account[%d] address= %s pk= %s', i, account.address, privateKey);
+    if (networkAccounts.mnemonic)
+    {
+      const wallet = ethers.Wallet.fromMnemonic(networkAccounts.mnemonic, networkAccounts.path + `/${i}`);
+      console.log('account[%d] address= %s pk= %s', i, account.address, wallet.privateKey);
+    }
+    else
+    {
+      console.log('account[%d] address= %s', i, account.address);
+    }
+
 });
 
 
