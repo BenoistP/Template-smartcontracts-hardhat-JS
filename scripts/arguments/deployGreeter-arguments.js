@@ -1,7 +1,7 @@
 
 
 let params ={
-  message: "Hello, Hardhat ! (script argument)",
+  message: "Hello, Hardhat ! (Greeter script argument)",
 }
 
 module.exports = params;

@@ -7,7 +7,7 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
-const args = require("./arguments/deployGreeter-arguments")
+const args = require("./arguments/deployPayableGreeter-arguments")
 
 const DEFAULT_ARG_MESSAGE = "Hello, Hardhat! (default)"
 const listArgs = function (obj)
@@ -27,38 +27,44 @@ async function main() {
   // If this script is run directly using `node` you may want to call compile
   // manually to make sure everything is compiled
   // await hre.run('compile');
-  
-  listArgs( args );
-  // ethers is available in the global scope
-  const [deployer] = await ethers.getSigners();
-  console.dir( deployer)
-  console.log(
-    "Deploying the contracts with the account:",
-    await deployer.getAddress()
-  );
-  // We get the contract to deploy
-  const Greeter_CF = await hre.ethers.getContractFactory("Greeter");
 
+  // console.log( `deployGreeter.js: args: ${args}` );
+  listArgs( args );
+
+  // We get the contract to deploy
+  const PayableGreeter_CF = await hre.ethers.getContractFactory("PayableGreeter");
+
+  const [addr0_Deployer] = await ethers.getSigners();
   
-  console.log( `deployGreeter.js: args["message"] = ${args["message"]}` );
+  console.log( `deployPayableGreeter.js: args["message"] = ${args["message"]}` );
 
   const message = args["message"] ? args["message"] : DEFAULT_ARG_MESSAGE
-  console.log( `deployGreeter.js: args: message = ${message}` );
+  console.log( `deployPayableGreeter.js: args: message = ${message}` );
 
-  // const greeter = await Greeter_CF.deploy( /*args*/ message );
+  // const payableGreeter = await PayableGreeter_CF.deploy( /*args*/ message );
 
-  const greeter = await Greeter_CF.deploy(
+  const payableGreeter = await PayableGreeter_CF.deploy(
     message,
     {
     // from: deployer,
     // log: true,
-    // value: hre.ethers.utils.parseEther("0.001"),
+      value: hre.ethers.utils.parseEther("0.1"),
     }
   );
 
-  await greeter.deployed();
+  await payableGreeter.deployed();
 
-  console.log("Greeter deployed to:", greeter.address);
+  console.log("PayableGreeter deployed to:", payableGreeter.address)
+
+  const provider = ethers.getDefaultProvider()
+  const initialBalance_wei = await provider.getBalance( payableGreeter.address )
+  console.log( `deployPayableGreeter.js: initialBalance(wei) = ${initialBalance_wei}` )
+
+  console.log( `deployPayableGreeter.js: initialBalance = ${hre.ethers.utils.formatEther (initialBalance_wei)}` )
+
+  const deployerBalance = hre.ethers.utils.formatEther (await provider.getBalance( addr0_Deployer.address ))
+  console.log( `deployPayableGreeter.js: deployerBalance = ${deployerBalance}` )
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
