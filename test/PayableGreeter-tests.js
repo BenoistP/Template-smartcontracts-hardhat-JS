@@ -2,6 +2,7 @@ const { expect } = require("chai");
 // const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 
+const ETH_ONE_TENTH = hre.ethers.utils.parseEther("0.1")
 
 const PayableGreeterClassName = "PayableGreeter"
 
@@ -12,20 +13,24 @@ describe("PayableGreeter", function () {
 
   async function deployContractFixture() {
 
+    const provider = ethers.provider;
+
     const Greeter = await ethers.getContractFactory(PayableGreeterClassName);
-    console.debug(hre.ethers.utils.parseEther("0.1"))
-    const greeter = await Greeter.deploy(INITIAL_GREETER_MESSAGE, {value: hre.ethers.utils.parseEther("0.1"),});
+    const greeter = await Greeter.deploy(INITIAL_GREETER_MESSAGE, {value: ETH_ONE_TENTH,});
     await greeter.deployed();
 
-    return { greeter };
+    const initialBalance_Wei = await provider.getBalance( greeter.address );
+    // console.log( `initialBalance_Wei=${initialBalance_Wei}` )
+    const initialBalance_Eth = ethers.utils.formatUnits(initialBalance_Wei.toString(), "ether")
+    console.log( `initialBalance_Eth=${initialBalance_Eth} ETH` )
+
+    return { greeter, provider };
   }
 
 
   it("Should return the new greeting once it's changed", async function () {
-  //   const Greeter = await ethers.getContractFactory(PayableGreeterClassName);
-  //   const greeter = await Greeter.deploy("Hello, world!");
-  //   await greeter.deployed();
-  const {greeter} = await loadFixture(deployContractFixture);
+
+    const {greeter} = await loadFixture(deployContractFixture);
 
     expect(await greeter.greet()).to.equal( INITIAL_GREETER_MESSAGE );
 
@@ -40,59 +45,83 @@ describe("PayableGreeter", function () {
   // ---
 
   it("Should return the money to the owner", async function () {
-    const provider = ethers.getDefaultProvider();
 
     const [addr0] = await ethers.getSigners();
 
-    const {greeter} = await loadFixture(deployContractFixture);
+    const {greeter, provider} = await loadFixture(deployContractFixture);
 
-    // const Greeter = await ethers.getContractFactory(PayableGreeterClassName);
-    // const greeter = await Greeter.deploy("Hello, world!");
-
-    // const deployment = await greeter.deployed();
-    // console.log(deployment.deployTransaction.blockHash)
-
-    const initialBalance = await provider.getBalance( greeter.address );
-    // expect( initialBalance ).to.be.greaterThan( 0 );
-    console.log( `initialBalance=${initialBalance}` )
+    const initialBalance_Wei = await provider.getBalance( greeter.address );
+    expect( initialBalance_Wei ).to.be.greaterThan( 0 );
+    // console.log( `initialBalance_Wei=${initialBalance_Wei}` )
 
     const setWithdrawAllTx = await greeter.withdrawAllMoney( addr0.address );
     // wait until the transaction is mined
     await setWithdrawAllTx.wait();
-    const finalBalance = await provider.getBalance( greeter.address );
-    console.log( `finalBalance=${finalBalance}` )
+    const finalBalance_Wei = await provider.getBalance( greeter.address );
+    // console.log( `finalBalance=${finalBalance}` )
 
-    // expect( finalBalance ).to.equal( 0 );
-    expect( 0 ).to.equal( 0 );
+    expect( finalBalance_Wei ).to.equal( 0 );
   })
 
   // ---
-/*
-  it("Should NOT return the money to anyone but the owner", async function () {
-    const provider = ethers.getDefaultProvider();
 
-    const [addr0, addr1] = await ethers.getSigners();
+  it("Should return the money to anyone if called by the owner", async function () {
+    
 
-    const Greeter = await ethers.getContractFactory(PayableGreeterClassName);
-    const greeter = await Greeter.deploy("Hello, world!");
+    const [, addr1] = await ethers.getSigners();
+    const {greeter, provider} = await loadFixture(deployContractFixture);
 
-    const initialBalance = await provider.getBalance( greeter.address );
-console.log( initialBalance )
+    const contract_initialBalance_Wei = await provider.getBalance( greeter.address );
+    const addr1_initialBalance_Wei = await provider.getBalance( addr1.address );
+    console.log( `contract_initialBalance_Wei=${contract_initialBalance_Wei}` )
+    console.log( `addr1_initialBalance_Wei=${addr1_initialBalance_Wei}` )
 
-    expect( initialBalance ).to.be.greaterThan( 0 );
+    const contract_initialBalance_Eth = ethers.utils.formatUnits(contract_initialBalance_Wei.toString(), "ether")
+    console.log( `contract_initialBalance_Wei_Eth=${contract_initialBalance_Eth} ETH` )
 
-    // expect(await greeter.greet()).to.equal("Hello, world!");
+    expect( contract_initialBalance_Wei ).to.be.greaterThan( 0 );
 
     const setWithdrawAllTx = await greeter.withdrawAllMoney( addr1.address );
 
     // wait until the transaction is mined
     await setWithdrawAllTx.wait();
 
-    const finalBalance = await provider.getBalance( greeter.address );
+    const contract_finalBalance_Wei = await provider.getBalance( greeter.address );
+    const addr1_finalBalance_Wei = await provider.getBalance( addr1.address );
 
-    expect( finalBalance ).to.equal( initialBalance );
+    expect( contract_finalBalance_Wei ).to.equal( 0 );
+    expect( addr1_finalBalance_Wei ).to.be.greaterThan( addr1_initialBalance_Wei );
+
   })
-*/
+
   // ---
+
+  it("Should NOT return the money to anyone if not called by the owner", async function () {
+    
+
+    const [, addr1] = await ethers.getSigners();
+    const {greeter, provider} = await loadFixture(deployContractFixture);
+
+    const contract_initialBalance_Wei = await provider.getBalance( greeter.address );
+    const addr1_initialBalance_Wei = await provider.getBalance( addr1.address );
+    console.log( `contract_initialBalance_Wei=${contract_initialBalance_Wei}` )
+    console.log( `addr1_initialBalance_Wei=${addr1_initialBalance_Wei}` )
+
+    expect( contract_initialBalance_Wei ).to.be.greaterThan( 0 );
+
+    // const setWithdrawAllTx = await greeter.connect(addr1).withdrawAllMoney( addr1.address );
+    // wait until the transaction is mined
+    // await setWithdrawAllTx.wait();
+    await expect(
+      greeter.connect(addr1).withdrawAllMoney( addr1.address )
+    ).to.be.revertedWith("You cannot withdraw.");
+
+
+    const contract_finalBalance_Wei = await provider.getBalance( greeter.address );
+    const addr1_finalBalance_Wei = await provider.getBalance( addr1.address );
+
+    expect( contract_finalBalance_Wei ).to.equal( contract_initialBalance_Wei );
+    expect( addr1_finalBalance_Wei ).to.equal( addr1_initialBalance_Wei );
+  })
 
 });
