@@ -48,9 +48,13 @@ await greeter.greet();
 
 ```
 
+List accounts
+```shell
+let accounts = await ethers.provider.listAccounts();
+const provider = ethers.provider;
+let balance = await provider.getBalance( accounts[0] );
 
-
-
+```
 
 
 All
