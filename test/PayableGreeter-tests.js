@@ -81,16 +81,28 @@ describe("PayableGreeter", function () {
 
     expect( contract_initialBalance_Wei ).to.be.greaterThan( 0 );
 
-    const setWithdrawAllTx = await greeter.withdrawAllMoney( addr1.address );
+    // const setWithdrawAllTx = await greeter.withdrawAllMoney( addr1.address );
+    // // wait until the transaction is mined
+    // await setWithdrawAllTx.wait();
+    /*
+    const contract_initialBalance_Wei_sub = ethers.BigNumber.from("0").sub(contract_initialBalance_Wei)
+    await expect(
+      greeter.withdrawAllMoney( addr1.address )
+     ).to.changeEtherBalance( [greeter.address, addr1.address], [contract_initialBalance_Wei_sub, contract_initialBalance_Wei], {includeFee: false});
+    */
+    const contract_initialBalance_Wei_sub = ethers.BigNumber.from("0").sub( contract_initialBalance_Wei)
+    await expect(
+      greeter.withdrawAllMoney( addr1.address )
+     ).to.changeEtherBalances( [greeter, addr1], [contract_initialBalance_Wei_sub, contract_initialBalance_Wei], {includeFee: false} );
 
-    // wait until the transaction is mined
-    await setWithdrawAllTx.wait();
 
     const contract_finalBalance_Wei = await provider.getBalance( greeter.address );
     const addr1_finalBalance_Wei = await provider.getBalance( addr1.address );
 
     expect( contract_finalBalance_Wei ).to.equal( 0 );
     expect( addr1_finalBalance_Wei ).to.be.greaterThan( addr1_initialBalance_Wei );
+
+
 
   })
 
