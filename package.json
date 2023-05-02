@@ -26,7 +26,6 @@
     "docall": "concurrently \"npm run dodoc\" \"npm run docgen\"",
     "compile": "npx hardhat compile",
     "comp": "npm run compile",
-    "c": "npm run compile",
     "console-no-compile": "npx hardhat console --no-compile",
     "console": "npx hardhat console",
     "cons": "npx hardhat console",
