@@ -39,6 +39,7 @@ const DEFAULT_DOCS_HH_OUTPUT_PATH = DEFAULT_DOCS_OUTPUT_PATH + "/hh"
 const DEFAULT_DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH = DEFAULT_DOCS_OUTPUT_PATH + "/oz"
 const DEFAULT_CONTRACTS_BUILD_DIR = "./artifacts"
 
+const DEFAULT_HARDHAT_MNEMONIC = "test test test test test test test test test test test junk"
 
 console.log('-------------------------------------')
 
@@ -158,6 +159,8 @@ console.log('-------------------------------------')
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) =>
 {
   console.log("taskArgs=", taskArgs)
+  const HHaccounts= config.networks.hardhat.accounts
+  // console.log("HHaccounts=", HHaccounts)
   const accounts = await hre.ethers.getSigners()
 /* 
   for (const account of accounts) {
@@ -167,8 +170,13 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) =>
 
  */
   accounts.forEach(function (account, i) {
-    console.log('account.address=%d: %s', i, account.address);
+    const wallet = ethers.Wallet.fromMnemonic(HHaccounts.mnemonic, HHaccounts.path + `/${i}`);
+    const privateKey = wallet.privateKey
+        console.log('account[%d] address= %s pk= %s', i, account.address, privateKey);
 });
+
+
+const index = 0; // first wallet, increment for next wallets
 
 }) // task
 
@@ -248,6 +256,25 @@ module.exports = {
 
   networks: {
     hardhat: {
+      // Mnemonic Code Converter https://iancoleman.io/bip39/
+      // accounts:{mnemonic: "your mnemonic"}
+      // accounts:{mnemonic: DEFAULT_HARDHAT_MNEMONIC }
+
+      accounts:
+        process.env.LOCAL_PRIVATE_KEY !== undefined ?
+          [process.env.LOCAL_PRIVATE_KEY]
+          :
+          process.env.LOCAL_WALLET_MNEMONIC !== undefined ?
+            {
+              mnemonic: process.env.LOCAL_WALLET_MNEMONIC,
+              path: "m/44'/60'/0'/0",
+              initialIndex: 0,
+              count: 20,
+              passphrase: "",
+            }
+            :
+            {mnemonic: DEFAULT_HARDHAT_MNEMONIC },
+
     },
     // Goerli Testnet
     goerli: {
