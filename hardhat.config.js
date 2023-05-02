@@ -40,6 +40,9 @@ const DEFAULT_DOCS_PRIMITIVEFI_HH__DOCS_OUTPUT_PATH = DEFAULT_DOCS_OUTPUT_PATH +
 const DEFAULT_CONTRACTS_BUILD_DIR = "./artifacts"
 
 const DEFAULT_HARDHAT_MNEMONIC = "test test test test test test test test test test test junk"
+const ETH_10000 = "10000000000000000000000" // 10,000 ETH
+const ETH_10 = "10000000000000000000" // 10 ETH
+const DEFAULT_HARDHAT_BALANCE = ETH_10000
 
 console.log('-------------------------------------')
 
@@ -156,31 +159,61 @@ console.log('-------------------------------------')
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async (taskArgs, hre) =>
+task("accounts", "Prints the list of accounts", async () => {
+  const accounts = await ethers.getSigners();
+
+  for (const account of accounts) {
+    console.log(account.address);
+  }
+});
+
+task("accountsDetails", "Prints the list of accounts", async (taskArgs, hre) =>
 {
   // console.log("taskArgs=", taskArgs)
   
   const networkName= hre.network.name
-  console.dir(`networkName=${networkName}`)
+  console.log(`networkName=${networkName}`)
   const networkAccounts= config.networks[networkName].accounts
   
   const accounts = await hre.ethers.getSigners()
-  console.log('accounts.length=', accounts.length)
+  // console.log(  hre.ethers )
+
+  // const provider = hre.ethers.getDefaultProvider()
+  // console.log(  await provider.getNetwork() )
+
+  const provider = hre.ethers.provider
+  console.log(  provider )
+
+  console.log(`${accounts.length} account${accounts.length>1?"s":""} :` )
+  const accountsPadding = Math.log10(accounts.length)+1
+  /*
   accounts.forEach(function (account, i) {
     if (networkAccounts.mnemonic)
     {
       const wallet = ethers.Wallet.fromMnemonic(networkAccounts.mnemonic, networkAccounts.path + `/${i}`);
-      console.log('account[%d] address= %s pk= %s', i, account.address, wallet.privateKey);
+      let balance = provider.getBalance( accounts[0] ); // await
+      console.log('account[%d] address= %s pk= %s, balance = ', i, account.address, wallet.privateKey, balance);
     }
     else
     {
       console.log('account[%d] address= %s', i, account.address);
     }
+  });
+  */
 
-});
+await Promise.all( accounts.map(async (account, idx) => {
+  let str = `account[${String(idx).padStart(accountsPadding, ' ')}] address= ${account.address}`
+  if (networkAccounts.mnemonic)
+  {
+    const wallet = ethers.Wallet.fromMnemonic(networkAccounts.mnemonic, networkAccounts.path + `/${idx}`);
+    str+= ` pk= ${wallet.privateKey}`
+  }
+  const balance = await provider.getBalance( account.address );
+  str+= ` , balance = ${ethers.utils.formatEther(balance)}`
+  console.log(str)
+}));
 
 
-const index = 0; // first wallet, increment for next wallets
 
 }) // task
 
@@ -271,10 +304,11 @@ module.exports = {
           process.env.LOCAL_WALLET_MNEMONIC !== undefined ?
             {
               mnemonic: process.env.LOCAL_WALLET_MNEMONIC,
+              passphrase: "",
               path: "m/44'/60'/0'/0",
               initialIndex: 0,
               count: 20,
-              passphrase: "",
+              accountsBalance: "10000000000000000000", // 10 ETH
             }
             :
             {mnemonic: DEFAULT_HARDHAT_MNEMONIC },
@@ -290,10 +324,11 @@ module.exports = {
           process.env.LOCAL_WALLET_MNEMONIC !== undefined ?
             {
               mnemonic: process.env.LOCAL_WALLET_MNEMONIC,
+              passphrase: "",
               path: "m/44'/60'/0'/0",
               initialIndex: 0,
               count: 20,
-              passphrase: "",
+              accountsBalance: "10000000000000000000", // 10 ETH
             }
             :
             [],
@@ -309,10 +344,11 @@ module.exports = {
           process.env.LOCAL_WALLET_MNEMONIC !== undefined ?
             {
               mnemonic: process.env.LOCAL_WALLET_MNEMONIC,
+              passphrase: "",
               path: "m/44'/60'/0'/0",
               initialIndex: 0,
               count: 20,
-              passphrase: "",
+              accountsBalance: "10000000000000000000", // 10 ETH
             }
             :
             [],
@@ -328,10 +364,11 @@ module.exports = {
           process.env.LOCAL_WALLET_MNEMONIC !== undefined ?
             {
               mnemonic: process.env.LOCAL_WALLET_MNEMONIC,
+              passphrase: "",
               path: "m/44'/60'/0'/0",
               initialIndex: 0,
               count: 20,
-              passphrase: "",
+              accountsBalance: "10000000000000000000", // 10 ETH
             }
             :
             [],
@@ -347,10 +384,11 @@ module.exports = {
           process.env.PROJECT_WALLET_MNEMONIC !== undefined ?
             {
               mnemonic: process.env.PROJECT_WALLET_MNEMONIC,
+              passphrase: "",
               path: "m/44'/60'/0'/0",
               initialIndex: 0,
               count: 20,
-              passphrase: "",
+              accountsBalance: "10000000000000000000", // 10 ETH
             }
             :
             [],
