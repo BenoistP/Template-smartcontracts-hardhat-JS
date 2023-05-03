@@ -74,7 +74,7 @@ const PayableGreeter = await ethers.getContractFactory("PayableGreeter");
 const payGreeter = await PayableGreeter.deploy( "Hello, Hh !", { value: hre.ethers.utils.parseEther("0.1") } );
 payGreeter.address;
 await payGreeter.greet();
-const provider = ethers.getDefaultProvider()
+const provider = ethers.provider;
 await provider.getBalance( payGreeter.address )
 
 ```
