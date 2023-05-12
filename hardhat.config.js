@@ -14,6 +14,8 @@ require('dotenv').config({path: './.env-local'})
 // .env-project
 require('dotenv').config({path: './.env-project'})
 
+require('hardhat-deploy');
+require('hardhat-ethers'); // require('hardhat-deploy-ethers');
 
 const Path = require("path");
 const createDirAndSubdirsIfNotExists = require("./js/tools").createDirAndSubdirsIfNotExists
