@@ -7,6 +7,9 @@ module.exports = async (
 }) => {
   const {deploy} = deployments;
   const {deployer} = await getNamedAccounts();
+  const args = [
+    "Hello, Hardhat! (deployed with hardhat-deploy)",
+  ];
 
   // the following will only deploy "Greeter" if the contract was never deployed or if the code changed since last deployment
   await deploy(
@@ -14,9 +17,7 @@ module.exports = async (
     {
       from: deployer,
       gasLimit: 4000000,
-      args: [
-        "Hello, Hardhat! (deployed with hardhat-deploy)",
-      ],
+      args: args,
     }
   );
 };
