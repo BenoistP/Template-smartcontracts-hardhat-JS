@@ -400,11 +400,28 @@ module.exports = {
   },
   
   paths: {
+    // hardhat default
     sources: "./contracts",
     tests: "./test",
     cache: "./cache",
     // artifacts: "./artifacts"
     artifacts: CONTRACTS_BUILD_DIR,
+
+    // hardhat-deploy plugin
+    deploy: 'hardhat-deploy/deploy',
+    deployments: 'hardhat-deploy/deployments',
+    imports: 'hardhat-deploy/imports'
+
+  },
+
+    //This is the part you need to verify
+    namedAccounts: {
+      deployer: {
+          default: 0,
+      },
+      // player: {
+      //     default: 1,
+      // },
   },
 
   gasReporter: {
