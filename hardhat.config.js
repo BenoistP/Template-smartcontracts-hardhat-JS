@@ -15,7 +15,7 @@ require('dotenv').config({path: './.env-local'})
 require('dotenv').config({path: './.env-project'})
 
 require('hardhat-deploy');
-require('hardhat-ethers'); // require('hardhat-deploy-ethers');
+require("@nomiclabs/hardhat-ethers"); // require('hardhat-deploy-ethers');
 
 const Path = require("path");
 const createDirAndSubdirsIfNotExists = require("./js/tools").createDirAndSubdirsIfNotExists
