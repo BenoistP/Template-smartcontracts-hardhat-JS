@@ -71,3 +71,4 @@ docs/generated
 #!.gitignore
 !*.md
 pnpm-lock.yaml
+pnpm-lock.yaml
