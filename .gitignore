@@ -70,3 +70,4 @@ docs/generated
 # Don't ignore these files...
 #!.gitignore
 !*.md
+pnpm-lock.yaml
