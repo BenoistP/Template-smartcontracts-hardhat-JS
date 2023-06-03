@@ -18,6 +18,7 @@
     "dotenv": "^16.0.3",
     "ethers": "5.7.2",
     "hardhat": "^2.13.1",
+    "hardhat-contract-sizer": "^2.9.0",
     "hardhat-deploy": "^0.11.28",
     "hardhat-gas-reporter": "^1.0.9",
     "hardhat-tracer": "^2.2.2",
@@ -61,9 +62,7 @@
     "npm:cleanCache": "npm cache clean -f",
     "cleanBuildDir": "del-cli ./artifacts",
     "cleanDocsDir": "del-cli ./docs/generated/solidity-docs/natspec/",
-    "clnBld": "npm run cleanBuildDir"
-  },
-  "dependencies": {
-    "pnpm": "^8.6.0"
+    "clnBld": "npm run cleanBuildDir",
+    "size": "npx hardhat size-contracts --no-compile"
   }
 }

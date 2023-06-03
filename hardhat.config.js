@@ -17,6 +17,9 @@ require('dotenv').config({path: './.env-project'})
 require('hardhat-deploy');
 require("@nomiclabs/hardhat-ethers"); // require('hardhat-deploy-ethers');
 
+// https://github.com/ItsNickBarry/hardhat-contract-sizer
+require("hardhat-contract-sizer");
+
 const Path = require("path");
 const createDirAndSubdirsIfNotExists = require("./js/tools").createDirAndSubdirsIfNotExists
 
@@ -427,6 +430,15 @@ module.exports = {
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
     currency: "USD",
+  },
+
+  contractSizer: {
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: true,
+    strict: true,
+    // only: [':ERC20$'],
+    // except: [':ERC20$'],
   },
 
   etherscan: {
